@@ -87,10 +87,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         valueTest --;
         System.out.println("value decrease: "+valueTest);
     }
-    public void gameOver(){
-        Intent intent = new Intent(this, EndGameActivity.class);
-        startActivity(intent);
-    }
 
 
     @Override

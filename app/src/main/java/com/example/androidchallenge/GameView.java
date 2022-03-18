@@ -1,6 +1,8 @@
 package com.example.androidchallenge;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,6 +32,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private final int SCREEN_WIDTH = this.getResources().getDisplayMetrics().widthPixels;
     private final int SCREEN_HEIGHT = this.getResources().getDisplayMetrics().heightPixels;
 
+    private final Context mContext;
+
+    private boolean isGameOver = false;
+
+
    private final Player player = new Player(
             (float) new Random().nextInt(SCREEN_WIDTH * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
             (float) new Random().nextInt(SCREEN_HEIGHT * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
@@ -41,6 +48,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public GameView(Context context) {
         super(context);
+        mContext = context;
         getHolder().addCallback(this);
         setFocusable(true);
     }
@@ -124,8 +132,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update() {
-
         player.move();
+
+        for (Debris comet : debris){
+            if (CollisionManager.isColliding(player.getCircle(), comet.getCircle())){
+                System.out.println("aie");
+                gameOver();
+            }
+        }
+
+        if (CollisionManager.isColliding(player.getCircle(), mars.getCircle())){
+            gameOver();
+        }
+    }
+
+
+    public void gameOver(){
+        if(!isGameOver){
+            isGameOver = true;
+            Intent intent = new Intent(getContext(), EndGameActivity.class);
+            mContext.startActivity(intent);
+        }
     }
 
     @Override
@@ -137,10 +164,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         threadDraw.start();
         threadUpdate.setRunning(true);
         threadUpdate.start();
-    }
-
-    private int nearest(int minus, int plus, double pick) {
-        return Math.abs(minus - pick) < Math.abs(plus - pick) ? minus : plus;
     }
 
     @Override

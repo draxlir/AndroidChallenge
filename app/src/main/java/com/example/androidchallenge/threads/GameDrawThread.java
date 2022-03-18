@@ -42,8 +42,8 @@ public class GameDrawThread extends Thread {
                     }
                 }
             }
+            mHandler.postDelayed(this, 50/3);
         }
-        mHandler.postDelayed(this, 50/3);
     }
 
     public void setRunning(boolean running) {
