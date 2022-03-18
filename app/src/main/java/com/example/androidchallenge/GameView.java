@@ -3,20 +3,28 @@ package com.example.androidchallenge;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
-
 
 import com.example.androidchallenge.domain.Entity;
 import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.domain.Debris;
 import com.example.androidchallenge.domain.Mars;
+import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.threads.GameDrawThread;
 import com.example.androidchallenge.threads.GameUpdateThread;
 
@@ -32,9 +40,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private final int SCREEN_WIDTH = this.getResources().getDisplayMetrics().widthPixels;
     private final int SCREEN_HEIGHT = this.getResources().getDisplayMetrics().heightPixels;
 
+
     private final Context mContext;
 
     private boolean isGameOver = false;
+
+
+    private float marsPlayerDistance;
 
 
    private final Player player = new Player(
@@ -46,11 +58,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private final List<Debris> debris = new ArrayList<>();
     private Mars mars;
 
+    private Bitmap scaled;
+
+    private long startTime;
+    private long timeSpend;
+
     public GameView(Context context) {
         super(context);
         mContext = context;
         getHolder().addCallback(this);
         setFocusable(true);
+
+        //background
+        Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_space);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+        scaled = Bitmap.createScaledBitmap(background, metrics.widthPixels,metrics.heightPixels, true);
+
+        startTime = SystemClock.elapsedRealtime();
+
     }
 
     public void marsCreation() {
@@ -86,17 +115,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        canvas.drawColor(Color.BLACK);
+        canvas.drawBitmap(scaled, 0, 0, null);
         Paint paint = new Paint();
         paint.setColor(Color.rgb(255,0,0));
         paint.setTextSize(60);
         paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("draw test", SCREEN_WIDTH - 20, 60, paint);
+        canvas.drawText((int) computeDistanceMarsPlayer() + " km", SCREEN_WIDTH - 40, 50, paint);
 
         drawPlayer(canvas);
         drawDebris(canvas);
         drawMars(canvas);
         drawBorders(canvas);
+    }
+
+    private float computeDistanceMarsPlayer() {
+        double result = Math.pow(mars.getX() - player.getX(), 2) + Math.pow(mars.getY() - player.getY(), 2);
+        return (float) Math.sqrt(result);
     }
 
     private boolean isBorderOnScreen(Rect borders) {
@@ -144,6 +178,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         if (CollisionManager.isColliding(player.getCircle(), mars.getCircle())){
             gameOver();
         }
+      
+        marsPlayerDistance = computeDistanceMarsPlayer();
     }
 
 
@@ -189,5 +225,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void gameOver(){
+        timeSpend = (SystemClock.elapsedRealtime() - startTime) / 1000;
+        System.out.println(timeSpend);
+        Intent intent = new Intent(getContext(), EndGameActivity.class);
+        //mContext.startActivity(intent);
+
+        //Todo pass the time to endgame activity
+        /*SharedPreferences sharedPref = this.mContext.getSharedPreferences("settings",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("score", score.getScore());
+        editor.apply();*/
+        //mContext.startActivity(intent);
     }
 }

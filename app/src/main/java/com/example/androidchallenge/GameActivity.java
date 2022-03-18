@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 
@@ -79,7 +84,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         if(valueTest < 30){
             valueTest ++;
         }
-
         System.out.println("value : "+valueTest);
     }
 
@@ -88,12 +92,13 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         System.out.println("value decrease: "+valueTest);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         Sensor mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sm.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        Sensor mGeo = sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        sm.registerListener(this, mGeo, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -108,8 +113,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         synchronized (this) {
             if (sensor == Sensor.TYPE_ACCELEROMETER){
-                gameView.getPlayer().setSpeedX(-3 * values[0]);
-                gameView.getPlayer().setSpeedY(3 * values[1]);
+                //gameView.getPlayer().setSpeedX(-3 * values[0]);
+                //gameView.getPlayer().setSpeedY(3 * values[1]);
+            }
+            if (sensor == Sensor.TYPE_ROTATION_VECTOR) {
+                System.out.println(values[2]);
+                gameView.getPlayer().updateSpeed(values[2]);
             }
         }
     }
@@ -118,6 +127,5 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
-
 }
 
