@@ -165,7 +165,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawCircle(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f, Constants.PLAYER_RADIUS, player.getColor());
     }
 
-    public void update() {
+    public void update() throws InterruptedException {
         player.move();
 
         for (Debris comet : debris){
@@ -175,16 +175,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         if (CollisionManager.isColliding(player.getCircle(), mars.getCircle())){
-            gameOver();
+            if (player.getSpeedX() + player.getSpeedY() > 5){
+                gameOver(); //perdu
+            } else {
+                gameOver(); //gagné
+            }
         }
       
         marsPlayerDistance = computeDistanceMarsPlayer();
     }
 
 
-    public void gameOver(){
+    public void gameOver() throws InterruptedException {
         if(!isGameOver){
             isGameOver = true;
+
+            threadDraw.setRunning(false);
+            threadDraw.join();
+            threadUpdate .setRunning(false);
+            threadUpdate.join();
+
+
             Intent intent = new Intent(getContext(), EndGameActivity.class);
             mContext.startActivity(intent);
 
