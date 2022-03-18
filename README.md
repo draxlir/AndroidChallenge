@@ -12,8 +12,8 @@ Des débris vont lui barrer la route et il doit obligatoirement les esquiver pou
 # Capteurs et technologies
 
 - Touch Screen : Rester appuyé à l'écran active les propulseurs du vaisseau et donc ralentit sa vitesse. Relacher lui permet de reprendre sa vitesse de base.
-- Accéléromètre :
 - Rotation geomagnétique : Le vaisseau avance toujours dans la direction opposée au nord magnétique. En orientant l'appareil, le vaisseau se déplacera différement dans la zone.
+- Accéléromètre : Change légèrement la direction du vaisseau.
 
 # Équipe
 
