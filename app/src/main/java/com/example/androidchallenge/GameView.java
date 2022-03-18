@@ -10,7 +10,6 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
-
 import com.example.androidchallenge.domain.Entity;
 import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.domain.Debris;
@@ -29,6 +28,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private final int SCREEN_WIDTH = this.getResources().getDisplayMetrics().widthPixels;
     private final int SCREEN_HEIGHT = this.getResources().getDisplayMetrics().heightPixels;
+
+    private float marsPlayerDistance;
 
    private final Player player = new Player(
             (float) new Random().nextInt(SCREEN_WIDTH * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
@@ -83,12 +84,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         paint.setColor(Color.rgb(255,0,0));
         paint.setTextSize(60);
         paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("draw test", SCREEN_WIDTH - 20, 60, paint);
+        canvas.drawText((int) computeDistanceMarsPlayer() + " km", SCREEN_WIDTH - 40, 50, paint);
 
         drawPlayer(canvas);
         drawDebris(canvas);
         drawMars(canvas);
         drawBorders(canvas);
+    }
+
+    private float computeDistanceMarsPlayer() {
+        double result = Math.pow(mars.getX() - player.getX(), 2) + Math.pow(mars.getY() - player.getY(), 2);
+        return (float) Math.sqrt(result);
     }
 
     private boolean isBorderOnScreen(Rect borders) {
@@ -124,8 +130,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update() {
-
         player.move();
+        marsPlayerDistance = computeDistanceMarsPlayer();
     }
 
     @Override
