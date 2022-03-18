@@ -16,7 +16,6 @@ public class CollisionManager {
             double distance = Math.sqrt(
                     Math.pow(c1.getCenter().x - c2.getCenter().x, 2) +
                             Math.pow(c1.getCenter().y - c2.getCenter().y, 2));
-            System.out.println(distance + " " + (distance < c1.getRadius() + c2.getRadius()));
             return (distance < c1.getRadius() + c2.getRadius());
 
         }
