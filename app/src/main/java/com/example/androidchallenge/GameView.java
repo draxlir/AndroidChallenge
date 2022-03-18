@@ -9,10 +9,15 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+
 import com.example.androidchallenge.domain.Player;
+import com.example.androidchallenge.domain.Debris;
+import com.example.androidchallenge.domain.Mars;
 import com.example.androidchallenge.threads.GameDrawThread;
 import com.example.androidchallenge.threads.GameUpdateThread;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
@@ -29,10 +34,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             Constants.PLAYER_RADIUS
     );
 
+    private final List<Debris> debris = new ArrayList<>();
+    private Mars mars;
+
     public GameView(Context context) {
         super(context);
         getHolder().addCallback(this);
         setFocusable(true);
+    }
+
+    public void marsCreation() {
+        Random rnd = new Random();
+        int posX = rnd.nextInt((SCREEN_WIDTH * 5 -Constants.MARS_RADIUS) - Constants.MARS_RADIUS) + Constants.MARS_RADIUS;
+        int posY = rnd.nextInt((SCREEN_HEIGHT * 5 -Constants.MARS_RADIUS) - Constants.MARS_RADIUS) + Constants.MARS_RADIUS;
+        mars = new Mars((float) posX, (float) posY, Constants.MARS_RADIUS);
+    }
+
+    public void debrisCreation() {
+        Random rnd = new Random();
+        for(int i=0; i<Constants.DEBRIS_NUMBER; i++){
+            int radius = rnd.nextInt(100-50) + 50;
+            int posX = rnd.nextInt((SCREEN_WIDTH * 5 - radius) - radius) + radius;
+            int posY = rnd.nextInt((SCREEN_HEIGHT * 5 - radius) - radius) + radius;
+            debris.add(new Debris((float) posX, (float) posY, radius));
+        }
     }
 
     public void draw(Canvas canvas) {
@@ -60,6 +85,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        debrisCreation();
+        marsCreation();
+
         threadDraw.setRunning(true);
         threadDraw.start();
         threadUpdate.setRunning(true);
