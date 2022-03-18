@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_space">
 
+    <TextView
+        android:id="@+id/tw_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="68dp"
+        android:text="0000"
+        android:textColor="@android:color/white"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_play_again"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/end_game" />
+
     <android.widget.Button
         android:id="@+id/button_play_again"
         android:layout_width="200dp"
@@ -35,12 +48,12 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/end_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextViewFin de partie"
         android:textColor="@android:color/white"
-        android:textSize="25dp"
+        android:textSize="40dp"
         app:layout_constraintBottom_toTopOf="@+id/button_play_again"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
