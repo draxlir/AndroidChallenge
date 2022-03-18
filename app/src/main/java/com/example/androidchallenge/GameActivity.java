@@ -26,7 +26,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager sm;
     final Handler handler = new Handler();
     Runnable runnable;
-    int valueTest = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public boolean onLongClick(View v) {
                 startRunnableIncrease();
-                handler.postDelayed(runnable, 100);
+                handler.postDelayed(runnable, 333);
                 return true;
             }
         });
@@ -63,7 +62,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 } else{
                     increasePowerValue();
                 }
-                handler.postDelayed(runnable, 100);
+                handler.postDelayed(runnable, 333);
             }
         };
     }
@@ -71,9 +70,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         runnable = new Runnable() {
             @Override
             public void run() {
-                if(valueTest <= 0) return;
+                if(gameView.getPlayer().getThrusterPower() <= 0) return;
                 decreasePowerValue();
-                handler.postDelayed(runnable, 100);
+                handler.postDelayed(runnable, 333);
             }
 
         };
@@ -81,15 +80,15 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void increasePowerValue(){
-        if(valueTest < 30){
-            valueTest ++;
+        if(gameView.getPlayer().getThrusterPower() <= 9){
+            gameView.getPlayer().addThrusterPower(1);
         }
-        System.out.println("value : "+valueTest);
+        System.out.println("value : " + gameView.getPlayer().getThrusterPower());
     }
 
     private void decreasePowerValue(){
-        valueTest --;
-        System.out.println("value decrease: "+valueTest);
+        gameView.getPlayer().addThrusterPower(-1);
+        System.out.println("value decrease: " + gameView.getPlayer().getThrusterPower());
     }
 
     @Override

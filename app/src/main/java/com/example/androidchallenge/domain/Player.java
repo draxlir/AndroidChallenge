@@ -1,6 +1,7 @@
 package com.example.androidchallenge.domain;
 
 import android.graphics.Color;
+import android.provider.Settings;
 
 public class Player extends Entity {
 
@@ -40,6 +41,7 @@ public class Player extends Entity {
     public float getThrusterPower() { return thrusterPower; }
 
     public void updateSpeed(float azimuth) {
+        System.out.println("Propulseur = " + thrusterPower);
         float azimuthLevel = Math.abs(azimuth) % 0.5f;
         if (azimuth == 0) {
             speedX = 0;
@@ -66,6 +68,21 @@ public class Player extends Entity {
         } else if (azimuth < -0.5 && azimuth < -1) {
             speedX = 10 - azimuthLevel * 20;
             speedY = 0 - azimuthLevel * 20;
+        }
+
+        //accelerometer
+
+        if (speedX < 0) {
+            speedX += (Math.abs(speedX) / 10) * thrusterPower;
+        }
+        if (speedX >= 0) {
+            speedX -= (Math.abs(speedX) / 10) * thrusterPower;
+        }
+        if (speedY < 0) {
+            speedY += (Math.abs(speedY) / 10) * thrusterPower;
+        }
+        if (speedY >= 0) {
+            speedY -= (Math.abs(speedY) / 10) * thrusterPower;
         }
     }
 }
