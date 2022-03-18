@@ -171,32 +171,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         for (Debris comet : debris){
             if (CollisionManager.isColliding(player.getCircle(), comet.getCircle())){
                 System.out.println("aie");
-                gameOver();
+                gameOver(false);
             }
         }
 
         if (CollisionManager.isColliding(player.getCircle(), mars.getCircle())){
-            gameOver();
+            gameOver(true);
         }
       
         marsPlayerDistance = computeDistanceMarsPlayer();
     }
 
 
-    public void gameOver(){
+    public void gameOver(boolean win){
         if(!isGameOver){
             isGameOver = true;
             Intent intent = new Intent(getContext(), EndGameActivity.class);
             mContext.startActivity(intent);
 
 
-            timeSpend = (SystemClock.elapsedRealtime() - startTime) / 1000;
-            System.out.println(timeSpend);
+            timeSpend = (SystemClock.elapsedRealtime() - startTime);
             //Todo pass the time to endgame activity
-            /*SharedPreferences sharedPref = this.mContext.getSharedPreferences("settings",Context.MODE_PRIVATE);
+
+            SharedPreferences sharedPref = this.mContext.getSharedPreferences("settings",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("score", score.getScore());
-            editor.apply();*/
+            editor.putLong("score", timeSpend);
+            editor.putBoolean("result", win);
+            editor.apply();
         }
     }
 
