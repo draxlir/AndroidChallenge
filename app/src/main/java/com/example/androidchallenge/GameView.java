@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.threads.GameDrawThread;
 import com.example.androidchallenge.threads.GameUpdateThread;
 
@@ -20,10 +21,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private final int SCREEN_WIDTH = this.getResources().getDisplayMetrics().widthPixels;
     private final int SCREEN_HEIGHT = this.getResources().getDisplayMetrics().heightPixels;
 
+    private Player player;
+
     public GameView(Context context) {
         super(context);
         getHolder().addCallback(this);
         setFocusable(true);
+        player = new Player(0f, 0f, 10);
     }
 
     public void draw(Canvas canvas) {
@@ -67,5 +71,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             }
             retry = false;
         }
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

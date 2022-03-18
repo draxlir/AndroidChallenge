@@ -30,4 +30,34 @@ public class Player extends Entity {
 
     // PROBABLY NOT USEFUL
     public float getThrusterPower() { return thrusterPower; }
+
+    public void updateSpeed(float azimuth) {
+        float azimuthLevel = Math.abs(azimuth) % 0.5f;
+        if (azimuth == 0) {
+            speedX = 0;
+            speedY = 10;
+        } else if (azimuth == 0.5) {
+            speedX = -10;
+            speedY = 0;
+        } else if (azimuth == 1 || azimuth == -1) {
+            speedX = 0;
+            speedY = -10;
+        } else if (azimuth == -0.5) {
+            speedX = 10;
+            speedY = 0;
+        } else if (azimuth < 0.5 && azimuth > 0) {
+            speedX = 0 - azimuthLevel * 20;
+            speedY = 10 - azimuthLevel * 20;
+        }
+        else if (azimuth > 0.5 && azimuth < 1) {
+            speedX = -10 + azimuthLevel * 20;
+            speedY = 0 - azimuthLevel * 20;
+        } else if (azimuth < 0 && azimuth > -0.5) {
+            speedX = 0 + azimuthLevel * 20;
+            speedY = 10 - azimuthLevel * 20;
+        } else if (azimuth < -0.5 && azimuth < -1) {
+            speedX = 10 - azimuthLevel * 20;
+            speedY = 0 - azimuthLevel * 20;
+        }
+    }
 }
