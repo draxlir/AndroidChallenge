@@ -188,6 +188,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             isGameOver = true;
             Intent intent = new Intent(getContext(), EndGameActivity.class);
             mContext.startActivity(intent);
+
+
+            timeSpend = (SystemClock.elapsedRealtime() - startTime) / 1000;
+            System.out.println(timeSpend);
+            //Todo pass the time to endgame activity
+            /*SharedPreferences sharedPref = this.mContext.getSharedPreferences("settings",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("score", score.getScore());
+            editor.apply();*/
         }
     }
 
@@ -225,19 +234,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public Player getPlayer() {
         return player;
-    }
-
-    public void gameOver(){
-        timeSpend = (SystemClock.elapsedRealtime() - startTime) / 1000;
-        System.out.println(timeSpend);
-        Intent intent = new Intent(getContext(), EndGameActivity.class);
-        //mContext.startActivity(intent);
-
-        //Todo pass the time to endgame activity
-        /*SharedPreferences sharedPref = this.mContext.getSharedPreferences("settings",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("score", score.getScore());
-        editor.apply();*/
-        //mContext.startActivity(intent);
     }
 }
