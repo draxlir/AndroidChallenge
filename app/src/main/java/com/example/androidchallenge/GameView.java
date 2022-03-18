@@ -172,6 +172,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             if (CollisionManager.isColliding(player.getCircle(), comet.getCircle())){
                 System.out.println("aie");
                 gameOver(false);
+
             }
         }
 
@@ -189,10 +190,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             Intent intent = new Intent(getContext(), EndGameActivity.class);
             mContext.startActivity(intent);
 
-
             timeSpend = (SystemClock.elapsedRealtime() - startTime);
-            //Todo pass the time to endgame activity
 
+            
             SharedPreferences sharedPref = this.mContext.getSharedPreferences("settings",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putLong("score", timeSpend);
