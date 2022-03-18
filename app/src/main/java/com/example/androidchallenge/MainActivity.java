@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(getSupportActionBar()).hide(); // hide top bar
         setContentView(R.layout.activity_main);
-
-
     }
 
     public void clickStart(View v){
