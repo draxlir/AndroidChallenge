@@ -1,10 +1,8 @@
 package com.example.androidchallenge;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -20,11 +18,11 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidchallenge.domain.Circle;
 import com.example.androidchallenge.domain.Entity;
 import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.domain.Debris;
 import com.example.androidchallenge.domain.Mars;
-import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.threads.GameDrawThread;
 import com.example.androidchallenge.threads.GameUpdateThread;
 
@@ -54,6 +52,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             (float) new Random().nextInt(SCREEN_HEIGHT * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
             Constants.PLAYER_RADIUS
     );
+   private List<Circle> trainee  = new ArrayList<>();
 
     private final List<Debris> debris = new ArrayList<>();
     private Mars mars;
@@ -163,6 +162,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public void drawPlayer(Canvas canvas) {
         canvas.drawCircle(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f, Constants.PLAYER_RADIUS, player.getColor());
+        Paint paint = new Paint();
+        paint.setColor(Color.argb(10, 255, 255, 255));
+        for (Circle c : trainee) {
+            canvas.drawCircle((SCREEN_WIDTH / 2f) - player.getSpeedX() * 3, (SCREEN_HEIGHT / 2f) - player.getSpeedY() * 3, c.getRadius(), paint);
+        }
+        if (trainee.size() >= 10) {
+            trainee.remove(0);
+        }
+        trainee.add(player.getCircle());
     }
 
     public void update() {
