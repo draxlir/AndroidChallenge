@@ -11,6 +11,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 
@@ -82,7 +84,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         if(valueTest < 30){
             valueTest ++;
         }
-
         System.out.println("value : "+valueTest);
     }
 
@@ -90,11 +91,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         valueTest --;
         System.out.println("value decrease: "+valueTest);
     }
-    public void gameOver(){
-        Intent intent = new Intent(this, EndGameActivity.class);
-        startActivity(intent);
-    }
-
 
     @Override
     protected void onResume() {
