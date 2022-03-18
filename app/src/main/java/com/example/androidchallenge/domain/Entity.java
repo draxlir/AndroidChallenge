@@ -21,4 +21,8 @@ public abstract class Entity {
     public float getRadius() { return circle.getRadius(); }
 
     public Paint getColor() { return color; }
+
+    public Circle getCircle() {
+        return circle;
+    }
 }

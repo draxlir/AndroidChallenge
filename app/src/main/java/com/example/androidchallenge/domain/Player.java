@@ -28,6 +28,14 @@ public class Player extends Entity {
 
     public float getSpeedY() { return speedY; }
 
+    public void setSpeedX(float speedX) {
+        this.speedX = speedX;
+    }
+
+    public void setSpeedY(float speedY) {
+        this.speedY = speedY;
+    }
+
     // PROBABLY NOT USEFUL
     public float getThrusterPower() { return thrusterPower; }
 
