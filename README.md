@@ -5,9 +5,9 @@ Toutes les actions ont un impact de 0.5sec après. Le but est de se poser sur Ma
 
 # Jeu
 
-Unique objectif : atterrir sur Mars.
-Le joueur se retrouve perdu dans l'espace. Son but est de trouver la planète Mars et d'atterrir dessus. Malheureusement, la tâche ne sera pas aussi simple qu'elle en a l'air...
-Des débris vont lui barrer la route et il doit obligatoirement les esquiver pour ne pas endommager le vaisseau.
+Unique objectif : atterrir sur Mars (cercle orange).
+Le joueur (cercle blanc au centre de l'écran) se retrouve perdu dans l'espace. Son but est de trouver la planète Mars et d'atterrir dessus. Malheureusement, la tâche ne sera pas aussi simple qu'elle en a l'air...
+Des débris (cercles gris) vont lui barrer la route et il doit obligatoirement les esquiver pour ne pas endommager le vaisseau.
 
 # Capteurs et technologies
 
