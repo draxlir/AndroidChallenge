@@ -1,6 +1,10 @@
 package com.example.androidchallenge;
 
+
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements SensorEventListener {
 
     private GameView gameView;
     private SensorManager sm;
@@ -92,11 +96,32 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Sensor mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sm.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        int sensor = sensorEvent.sensor.getType();
+        float[] values = sensorEvent.values;
+
+        synchronized (this) {
+            if (sensor == Sensor.TYPE_ACCELEROMETER){
+                gameView.getPlayer().setSpeedX(-3 * values[0]);
+                gameView.getPlayer().setSpeedY(3 * values[1]);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
 }
 
