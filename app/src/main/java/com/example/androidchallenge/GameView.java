@@ -186,19 +186,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         if (CollisionManager.isColliding(player.getCircle(), mars.getCircle())){
-            if (player.getSpeedX() + player.getSpeedY() > 5){
-                gameOver(false); //perdu
-            } else {
                 gameOver(true); //gagné
             }
-
-        }
       
         marsPlayerDistance = computeDistanceMarsPlayer();
     }
 
 
-    public void gameOver(boolean win){
+    public void gameOver(boolean win) throws InterruptedException {
         if(!isGameOver){
             isGameOver = true;
 
@@ -206,7 +201,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             threadDraw.join();
             threadUpdate .setRunning(false);
             threadUpdate.join();
-
 
             Intent intent = new Intent(getContext(), EndGameActivity.class);
             mContext.startActivity(intent);
