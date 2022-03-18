@@ -83,12 +83,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         if(gameView.getPlayer().getThrusterPower() <= 9){
             gameView.getPlayer().addThrusterPower(1);
         }
-        System.out.println("value : " + gameView.getPlayer().getThrusterPower());
     }
 
     private void decreasePowerValue(){
         gameView.getPlayer().addThrusterPower(-1);
-        System.out.println("value decrease: " + gameView.getPlayer().getThrusterPower());
     }
 
     @Override
@@ -112,11 +110,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         synchronized (this) {
             if (sensor == Sensor.TYPE_ACCELEROMETER){
-                //gameView.getPlayer().setSpeedX(-3 * values[0]);
-                //gameView.getPlayer().setSpeedY(3 * values[1]);
+                gameView.getPlayer().updateSpeedAccelerometer(values[1]);
             }
             if (sensor == Sensor.TYPE_ROTATION_VECTOR) {
-                System.out.println(values[2]);
                 gameView.getPlayer().updateSpeed(values[2]);
             }
         }
