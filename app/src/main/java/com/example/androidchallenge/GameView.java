@@ -4,12 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
 
+import com.example.androidchallenge.domain.Entity;
 import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.domain.Debris;
 import com.example.androidchallenge.domain.Mars;
@@ -28,7 +30,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private final int SCREEN_WIDTH = this.getResources().getDisplayMetrics().widthPixels;
     private final int SCREEN_HEIGHT = this.getResources().getDisplayMetrics().heightPixels;
 
-    private final Player player = new Player(
+   private final Player player = new Player(
             (float) new Random().nextInt(SCREEN_WIDTH * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
             (float) new Random().nextInt(SCREEN_HEIGHT * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
             Constants.PLAYER_RADIUS
@@ -60,6 +62,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }
     }
 
+    private void drawBorders(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.WHITE);
+        Rect borders = new Rect(0, 0, SCREEN_WIDTH*5, SCREEN_HEIGHT*5);
+        if(isBorderOnScreen(borders)) {
+            canvas.drawRect(SCREEN_WIDTH/2 + borders.left - player.getX(),
+                    SCREEN_HEIGHT/2 + borders.top - player.getY(),
+                    SCREEN_WIDTH/2 +  borders.right - player.getX(),
+                    SCREEN_HEIGHT/2 + borders.bottom - player.getY(),
+                    paint);
+        }
+    }
+
     public void draw(Canvas canvas) {
         super.draw(canvas);
         canvas.drawColor(Color.BLACK);
@@ -68,19 +84,48 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         paint.setTextSize(60);
         paint.setTextAlign(Paint.Align.RIGHT);
         canvas.drawText("draw test", SCREEN_WIDTH - 20, 60, paint);
+
+        drawPlayer(canvas);
+        drawDebris(canvas);
+        drawMars(canvas);
+        drawBorders(canvas);
     }
 
-
-    public void drawDebris() {
-
+    private boolean isBorderOnScreen(Rect borders) {
+        return borders.right < player.getX() + (SCREEN_WIDTH/2) ||
+                borders.left > player.getX() - (SCREEN_WIDTH/2)  ||
+                borders.bottom < player.getY() + (SCREEN_HEIGHT/2)  ||
+                borders.top > player.getY() - (SCREEN_HEIGHT/2) ;
     }
 
-    public void drawMars() {
+    private boolean isEntityOnScreen(Entity entity) {
+        return entity.getX() < player.getX() + (SCREEN_WIDTH/2) + entity.getRadius() &&
+                entity.getX() > player.getX() - (SCREEN_WIDTH/2) - entity.getRadius() &&
+                entity.getY() < player.getY() + (SCREEN_HEIGHT/2) + entity.getRadius() &&
+                entity.getY() > player.getY() - (SCREEN_HEIGHT/2) - entity.getRadius();
+    }
 
+    public void drawDebris(Canvas canvas) {
+        for(Debris debris1 : debris) {
+            if (isEntityOnScreen(debris1)) {
+                canvas.drawCircle(SCREEN_WIDTH/2 + debris1.getX() - player.getX(),SCREEN_HEIGHT/2 + debris1.getY() - player.getY(), debris1.getRadius(), debris1.getColor());
+            }
+        }
+    }
+
+    public void drawMars(Canvas canvas) {
+        if(isEntityOnScreen(mars)) {
+            canvas.drawCircle(SCREEN_WIDTH/2 + mars.getX() - player.getX(),SCREEN_HEIGHT/2 + mars.getY() - player.getY(), mars.getRadius(), mars.getColor());
+        }
+    }
+
+    public void drawPlayer(Canvas canvas) {
+        canvas.drawCircle(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f, Constants.PLAYER_RADIUS, player.getColor());
     }
 
     public void update() {
 
+        player.move();
     }
 
     @Override
@@ -92,6 +137,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         threadDraw.start();
         threadUpdate.setRunning(true);
         threadUpdate.start();
+    }
+
+    private int nearest(int minus, int plus, double pick) {
+        return Math.abs(minus - pick) < Math.abs(plus - pick) ? minus : plus;
     }
 
     @Override
