@@ -14,6 +14,7 @@ import com.example.androidchallenge.domain.Entity;
 import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.domain.Debris;
 import com.example.androidchallenge.domain.Mars;
+import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.threads.GameDrawThread;
 import com.example.androidchallenge.threads.GameUpdateThread;
 
