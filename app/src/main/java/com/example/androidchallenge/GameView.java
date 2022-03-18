@@ -9,8 +9,11 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidchallenge.domain.Player;
 import com.example.androidchallenge.threads.GameDrawThread;
 import com.example.androidchallenge.threads.GameUpdateThread;
+
+import java.util.Random;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
@@ -19,6 +22,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private final int SCREEN_WIDTH = this.getResources().getDisplayMetrics().widthPixels;
     private final int SCREEN_HEIGHT = this.getResources().getDisplayMetrics().heightPixels;
+
+    private final Player player = new Player(
+            (float) new Random().nextInt(SCREEN_WIDTH * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
+            (float) new Random().nextInt(SCREEN_HEIGHT * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
+            Constants.PLAYER_RADIUS
+    );
 
     public GameView(Context context) {
         super(context);
@@ -34,6 +43,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         paint.setTextSize(60);
         paint.setTextAlign(Paint.Align.RIGHT);
         canvas.drawText("draw test", SCREEN_WIDTH - 20, 60, paint);
+    }
+
+
+    public void drawDebris() {
+
+    }
+
+    public void drawMars() {
+
     }
 
     public void update() {
@@ -60,12 +78,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             try {
                 threadDraw.setRunning(false);
                 threadDraw.join();
-                threadUpdate.setRunning(false);
+                threadUpdate .setRunning(false);
                 threadUpdate.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             retry = false;
         }
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
