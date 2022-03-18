@@ -101,10 +101,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         Sensor mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sm.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        Sensor mGeo = sm.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
+        Sensor mGeo = sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         sm.registerListener(this, mGeo, SensorManager.SENSOR_DELAY_NORMAL);
-        Sensor mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sm.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -122,7 +120,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 //gameView.getPlayer().setSpeedX(-3 * values[0]);
                 //gameView.getPlayer().setSpeedY(3 * values[1]);
             }
-            if (sensor == Sensor.TYPE_GAME_ROTATION_VECTOR) {
+            if (sensor == Sensor.TYPE_ROTATION_VECTOR) {
                 System.out.println(values[2]);
                 gameView.getPlayer().updateSpeed(values[2]);
             }
@@ -133,24 +131,5 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
-}
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        int sensor = sensorEvent.sensor.getType();
-        float[] values = sensorEvent.values;
-
-        synchronized (this) {
-            if (sensor == Sensor.TYPE_ACCELEROMETER){
-                gameView.getPlayer().setSpeedX(-3 * values[0]);
-                gameView.getPlayer().setSpeedY(3 * values[1]);
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
-
 }
 

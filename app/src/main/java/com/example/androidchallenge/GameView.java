@@ -31,8 +31,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private final int SCREEN_WIDTH = this.getResources().getDisplayMetrics().widthPixels;
     private final int SCREEN_HEIGHT = this.getResources().getDisplayMetrics().heightPixels;
 
-    private Player player;
-
    private final Player player = new Player(
             (float) new Random().nextInt(SCREEN_WIDTH * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
             (float) new Random().nextInt(SCREEN_HEIGHT * 5 - Constants.PLAYER_RADIUS) + Constants.PLAYER_RADIUS,
@@ -46,7 +44,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super(context);
         getHolder().addCallback(this);
         setFocusable(true);
-        player = new Player(0f, 0f, 10);
     }
 
     public void marsCreation() {
