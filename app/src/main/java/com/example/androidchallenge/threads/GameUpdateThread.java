@@ -30,8 +30,8 @@ public class GameUpdateThread extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            mHandler.postDelayed(this, 50);
         }
-        mHandler.postDelayed(this, 50);
     }
 
     public void setRunning(boolean running) {

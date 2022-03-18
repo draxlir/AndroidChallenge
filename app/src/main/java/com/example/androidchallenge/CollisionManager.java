@@ -2,7 +2,7 @@ package com.example.androidchallenge;
 
 import com.example.androidchallenge.domain.Circle;
 
-public class ColiisionManager {
+public class CollisionManager {
 
     private static boolean aabbCollision(Circle c1, Circle c2){
         return (c1.getCenter().x + c1.getRadius() + c2.getRadius() > c2.getCenter().x
@@ -16,6 +16,7 @@ public class ColiisionManager {
             double distance = Math.sqrt(
                     Math.pow(c1.getCenter().x - c2.getCenter().x, 2) +
                             Math.pow(c1.getCenter().y - c2.getCenter().y, 2));
+            System.out.println(distance + " " + (distance < c1.getRadius() + c2.getRadius()));
             return (distance < c1.getRadius() + c2.getRadius());
 
         }
